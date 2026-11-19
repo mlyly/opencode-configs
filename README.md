@@ -1,12 +1,10 @@
-# My global opencode configurations
+# OpenCode configurations
 
-Mount this directory as a volume in the opencode container
+(NOTE: llm server setup: git@github.com:mlyly/ai-server-setup.git - see AGENTS.md / Execution)
 
-```text
--v /path/to/configs:/root/.config/opencode/
-```
+## Clone
 
-OR:
+Clone this repo to ```~/.config/opencode```
 
 ```bash
 git clone git@github.com:mlyly/opencode-configs.git ~/.config/opencode
@@ -24,18 +22,17 @@ docker run -it --rm \
 
 ## Docker sandbox
 
-1. checkout this repo
-2. link to ```~/.config/opencode```
-3. import skills ```sbx skills import```
-4. run opencode sandbox ```sbx run --name PROJECT-NAME opencode -- --auto```
+1. checkout & link to ```~/.config/opencode```
+2. import skills ```sbx skills import```
+3. run opencode sandbox ```sbx run --name PROJECT-NAME opencode -- --auto```
 
-OR
+## Sandbox mount
 
 ```bash
 sbx run --name PROJECT-NAME opencode . ~/.config/opencode:/home/agent/.config/opencode:ro -- --auto
 ```
 
-OR ```sbxenv.yaml```
+## ```sbxenv.yaml```
 
 ```bash
 sbx env --help
