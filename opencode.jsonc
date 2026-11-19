@@ -1,0 +1,77 @@
+{
+  "$schema": "https://opencode.ai",
+  "provider": {
+    "v100-litellm": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "LiteLLM Gateway",
+      "options": {
+        "baseURL": "http://llm-1:4000/v1",
+        "apiKey": "{env:OPENCODE_LITELLM_KEY}"
+      },
+      "models": {
+        "qwen-architect": {
+          "name": "Qwen 3.8 27B Architect (Fast / Non-Thinking)",
+          "limit": {
+            "context": 131072,
+            "output": 16384
+          }
+        },
+        "qwen-architect-deep": {
+          "name": "Qwen 3.8 27B Architect (Deep Thinking)",
+          "limit": {
+            "context": 131072,
+            "output": 24576
+          }
+        },
+        "qwen-worker": {
+          "name": "Qwen 3 30B-A3B MoE Worker (4x Parallel)",
+          "limit": {
+            "context": 32768,
+            "output": 8192
+          }
+        }
+      }
+    }
+  },
+  "model": "v100-litellm/qwen-architect",
+  "small_model": "v100-litellm/qwen-worker",
+  "agent": {
+    "plan": {
+      "description": "Primary interactive planning mode using full deep reasoning",
+      "model": "v100-litellm/qwen-architect-deep",
+      "temperature": 0.2
+    },
+    "build": {
+      "description": "Fast primary implementation agent (non-thinking) with automatic deep-reasoning escalation",
+      "model": "v100-litellm/qwen-architect",
+      "temperature": 0.1
+    },
+    "architect-deep": {
+      "description": "Deep-reasoning architectural planner and root-cause debugger",
+      "mode": "all",
+      "model": "v100-litellm/qwen-architect-deep",
+      "temperature": 0.2,
+      "tools": {
+        "write": false,
+        "edit": false
+      }
+    },
+    "architect-parallel": {
+      "description": "Parallel implementation subagent that utilizes the second primary GPU simultaneously",
+      "mode": "subagent",
+      "model": "v100-litellm/qwen-architect",
+      "temperature": 0.1
+    },
+    "explore": {
+      "description": "Fast 4x parallel codebase search and dependency tracing",
+      "model": "v100-litellm/qwen-worker",
+      "temperature": 0.1
+    },
+    "fast-edit": {
+      "description": "Rapid single-file edits, boilerplate, unit tests, and quick refactors",
+      "mode": "all",
+      "model": "v100-litellm/qwen-worker",
+      "temperature": 0.1
+    }
+  }
+}
